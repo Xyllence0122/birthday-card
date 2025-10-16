@@ -8,43 +8,28 @@
 </head>
 <body>
     <audio id="backgroundMusic" loop>
-        <!--
-            請將 "your_music_file.mp3" 替換成您的背景音樂檔案路徑。
-            建議將音樂檔案放在與 index.html 同一個資料夾內。
-            範例: <source src="birthday_song.mp3" type="audio/mpeg">
-        -->
         <source src="your_music_file.mp3" type="audio/mpeg">
         <source src="your_music_file.ogg" type="audio/ogg">
         您的瀏覽器不支援音頻播放。
     </audio>
 
-    <div id="image-background-container">
-        <!--
-            背景飄落圖片將由 JavaScript 動態生成。
-            請將您的背景圖片 (例如: 氣球, 花朵, 壽桃等) 放在一個資料夾，
-            例如: "images/"。
-            在 script.js 中，您會看到一個 `bgImageUrls` 陣列，請在那裡設定您的圖片路徑。
-        -->
-    </div>
+    <div id="image-background-container"></div>
 
     <div class="container">
         <div id="initial-interaction">
-            <div id="heart" class="heart-pulse">
-                ❤️
-            </div>
+            <div id="heart" class="heart-pulse">❤️</div>
             <p id="click-prompt">點擊愛心開啟卡片</p>
         </div>
 
         <div id="card" class="card hidden">
             <div class="card-inner">
                 <div class="card-front">
-                    <h1>親愛的家人、好友們：
-
-嘿～嘿～嘿～～讓大家久等啦！
-
-「全家人平安健康，就是最好的禮物。」
-這句話，是我們家月光仙子年年許下的生日願望。
-</h1>
+                    <h1>
+                        親愛的家人、好友們：<br><br>
+                        嘿～嘿～嘿～～讓大家久等啦！<br><br>
+                        「全家人平安健康，就是最好的禮物。」<br>
+                        這句話，是我們家月光仙子年年許下的生日願望。
+                    </h1>
                     <p>點擊翻開卡片...</p>
                 </div>
                 <div class="card-back">
@@ -59,18 +44,14 @@
                         📍 地點：龍湖宴會館（新竹市東區柴橋路355號）<br>
                     </p>
                     <div class="balloons">
-                        <span>🎈</span><span>🎈</span><span>🎈</span>
+                        <span>🎈</span><span>🎈</span><span>🎈</span><span>💖</span><span>💖</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 音量控制圖標 -->
-    <div id="volume-control" class="volume-on">
-        🔊
-    </div>
-
+    <div id="volume-control" class="volume-on">🔊</div>
     <script src="script.js"></script>
 </body>
 </html>
