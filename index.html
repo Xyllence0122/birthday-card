@@ -8,50 +8,48 @@
 </head>
 <body>
     <audio id="backgroundMusic" loop>
+        <!-- 請將 "your_music_file.mp3" 替換成您的背景音樂檔案路徑。
+        建議將音樂檔案放在與 index.html 同一個資料夾內。
+        範例: <source src="birthday_song.mp3" type="audio/mpeg"> -->
         <source src="your_music_file.mp3" type="audio/mpeg">
         <source src="your_music_file.ogg" type="audio/ogg">
         您的瀏覽器不支援音頻播放。
     </audio>
 
-    <div id="image-background-container"></div>
+    <!-- 刪除 #image-background-container，因為背景圖片飄動被移除 -->
+
+    <div class="background-decorations">
+        <!-- 氣球和愛心將從一開始就在背景飄動 -->
+    </div>
 
     <div class="container">
         <div id="initial-interaction">
-            <div id="heart" class="heart-pulse">❤️</div>
+            <div id="heart" class="heart-pulse">
+                ❤️
+            </div>
             <p id="click-prompt">點擊愛心開啟卡片</p>
         </div>
 
         <div id="card" class="card hidden">
             <div class="card-inner">
                 <div class="card-front">
-                    <h1>
-                        親愛的家人、好友們：<br><br>
-                        嘿～嘿～嘿～～讓大家久等啦！<br><br>
-                        「全家人平安健康，就是最好的禮物。」<br>
-                        這句話，是我們家月光仙子年年許下的生日願望。
-                    </h1>
+                    <h1>親愛的家人、好友們： 嘿～嘿～嘿～～讓大家久等啦！ 「全家人平安健康，就是最好的禮物。」 這句話，是我們家月光仙子年年許下的生日願望。 </h1>
                     <p>點擊翻開卡片...</p>
                 </div>
                 <div class="card-back">
                     <h2>月光仙子八十大壽邀請函 🎉</h2>
-                    <p>
-                        明年，就是老大——月光仙子的八十大壽 🎉 <br>
-                        我們特別準備了一場「好吃（不保證）」、「好玩（還在想）」、「好笑（看你捧場）」的壽宴<br>
-                        誠摯邀請大家放下手邊的忙碌<br>
-                        穿上您最亮眼的衣服、帶上最有趣的梗<br>
-                        一起來和我們的月光仙子熱熱鬧鬧慶祝這美好的一天！<br><br>
-                        📅 日期：2026年2月28日（星期六）午宴<br>
-                        📍 地點：龍湖宴會館（新竹市東區柴橋路355號）<br>
-                    </p>
-                    <div class="balloons">
-                        <span>🎈</span><span>🎈</span><span>🎈</span><span>💖</span><span>💖</span>
-                    </div>
+                    <p> 明年，就是老大——月光仙子的八十大壽 🎉 <br> 我們特別準備了一場「好吃（不保證）」、「好玩（還在想）」、「好笑（看你捧場）」的壽宴<br> 誠摯邀請大家放下手邊的忙碌<br> 穿上您最亮眼的衣服、帶上最有趣的梗<br> 一起來和我們的月光仙子熱熱鬧鬧慶祝這美好的一天！<br><br> 📅 日期：2026年2月28日（星期六）午宴<br> 📍 地點：龍湖宴會館（新竹市東區柴橋路355號）<br> </p>
+                    <!-- 刪除 .balloons，因為氣球已移至背景飄動 -->
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="volume-control" class="volume-on">🔊</div>
+    <!-- 音量控制圖標 -->
+    <div id="volume-control" class="volume-on">
+        🔊
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
