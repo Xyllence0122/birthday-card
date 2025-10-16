@@ -1,8 +1,8 @@
 :root {
-    --card-width-mobile: 90vw; /* 手機上卡片寬度 */
-    --card-height-mobile: calc(var(--card-width-mobile) / 1.618); /* 黃金比例高度 */
-    --card-max-width-desktop: 800px; /* 桌機上卡片最大寬度 */
-    --card-max-height-desktop: 500px; /* 桌機上卡片最大高度 */
+    --card-width-mobile: 95vw;
+    --card-height-mobile: calc(var(--card-width-mobile) / 1.4);
+    --card-max-width-desktop: 850px;
+    --card-max-height-desktop: 600px;
 }
 
 body {
@@ -14,12 +14,11 @@ body {
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(to right top, #ffecd2, #fcb69f);
-    overflow: hidden; /* 防止背景圖片溢出導致滾動條 */
+    overflow: hidden;
     color: #333;
-    position: relative; /* 用於定位音量控制 */
+    position: relative;
 }
 
-/* 背景圖片飄落容器 */
 #image-background-container {
     position: absolute;
     top: 0;
@@ -27,16 +26,16 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    pointer-events: none; /* 確保不阻擋其他元素的點擊事件 */
-    z-index: 0; /* 讓背景圖片在最底層 */
+    pointer-events: none;
+    z-index: 0;
 }
 
 .falling-image {
     position: absolute;
-    width: 50px; /* 圖片大小 */
+    width: 50px;
     height: auto;
     opacity: 0;
-    animation: fallAndFade 15s linear forwards; /* 調整動畫時間 */
+    animation: fallAndFade 15s linear forwards;
     pointer-events: none;
 }
 
@@ -47,7 +46,6 @@ body {
     100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-
 .container {
     display: flex;
     justify-content: center;
@@ -55,19 +53,11 @@ body {
     width: 100%;
     height: 100vh;
     position: relative;
-    z-index: 1; /* 確保內容在背景圖片之上 */
-}
-
-#initial-interaction {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    z-index: 1;
 }
 
 #heart {
-    font-size: 150px; /* 放大愛心 */
+    font-size: 150px;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
     position: relative;
@@ -75,57 +65,32 @@ body {
     text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
-.heart-pulse {
-    animation: pulse 1.5s infinite;
-}
+.heart-pulse { animation: pulse 1.5s infinite; }
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); } /* 稍微放大跳動幅度 */
+    50% { transform: scale(1.15); }
     100% { transform: scale(1); }
 }
 
-#click-prompt {
-    font-size: 1.5em;
-    color: #e94e77;
-    margin-top: 15px;
-    font-weight: bold;
-    animation: fadeInOut 2s infinite; /* 提示文字閃爍 */
-}
-
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-
-#initial-interaction.fade-out-interaction {
-    animation: fadeOutInteraction 1s forwards;
-}
-
-@keyframes fadeOutInteraction {
-    0% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
-}
-
 .card {
-    width: var(--card-width-mobile); /* 手機端寬度 */
-    height: var(--card-height-mobile); /* 手機端高度 */
+    width: var(--card-width-mobile);
+    height: var(--card-height-mobile);
     perspective: 1000px;
     opacity: 0;
     transform: scale(0.8);
     transition: all 1s ease-out;
     position: relative;
     z-index: 5;
-    max-width: var(--card-max-width-desktop); /* 桌機最大寬度 */
-    max-height: var(--card-max-height-desktop); /* 桌機最大高度 */
-    display: none; /* 初始隱藏 */
+    max-width: var(--card-max-width-desktop);
+    max-height: var(--card-max-height-desktop);
+    display: none;
 }
 
 .card.visible {
     opacity: 1;
     transform: scale(1);
-    display: block; /* 顯示卡片 */
+    display: block;
 }
 
 .card-inner {
@@ -134,13 +99,11 @@ body {
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.8s;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-.card.flipped .card-inner {
-    transform: rotateY(180deg);
-}
+.card.flipped .card-inner { transform: rotateY(180deg); }
 
 .card-front, .card-back {
     position: absolute;
@@ -151,58 +114,46 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 30px;
     box-sizing: border-box;
     text-align: center;
-    overflow-y: auto; /* 確保內容超出時可以滾動 */
+    overflow: hidden; /* 文字完全顯示，不可滾動 */
 }
 
 .card-front {
     background-color: #f7e7d2;
-    background-image: url('https://via.placeholder.com/600x370/f7e7d2/333?text=生日快樂封面'); /* 替換成您的封面圖片 */
     background-size: cover;
     background-position: center;
     color: #333;
 }
 
 .card-front h1 {
-    font-size: 1.8em; /* 手機上調整字體大小 */
+    font-size: 1.4em;
     color: #e94e77;
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
-}
-
-.card-front p {
-    font-size: 1em; /* 手機上調整字體大小 */
-    color: #555;
+    line-height: 1.6;
 }
 
 .card-back {
     background-color: #fff;
     transform: rotateY(180deg);
     color: #333;
-    display: block;
 }
 
 .card-back h2 {
-    font-size: 1.6em; /* 手機上調整字體大小 */
+    font-size: 1.6em;
     color: #e94e77;
     margin-bottom: 15px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .card-back p {
-    font-size: 0.9em; /* 手機上調整字體大小 */
+    font-size: 1em;
     line-height: 1.6;
-    margin-bottom: 15px;
     color: #555;
-    text-align: left; /* 讓邀請函內容靠左對齊 */
-    max-width: 90%; /* 限制文字寬度 */
-    margin-left: auto;
-    margin-right: auto;
+    text-align: left;
+    max-width: 90%;
+    margin: 0 auto;
 }
-
 
 .balloons {
     position: absolute;
@@ -215,63 +166,35 @@ body {
 }
 
 .balloons span {
-    font-size: 1.8em; /* 手機上調整大小 */
-    animation: floatUp 5s infinite ease-in-out;
+    font-size: 2em;
+    animation: floatUp 6s infinite ease-in-out;
 }
 
 .balloons span:nth-child(1) { animation-delay: 0s; }
-.balloons span:nth-child(2) { animation-delay: 1.5s; }
-.balloons span:nth-child(3) { animation-delay: 3s; }
+.balloons span:nth-child(2) { animation-delay: 1.2s; }
+.balloons span:nth-child(3) { animation-delay: 2.4s; }
+.balloons span:nth-child(4) { animation-delay: 3.6s; }
+.balloons span:nth-child(5) { animation-delay: 4.8s; }
 
 @keyframes floatUp {
     0% { transform: translateY(0) scale(1); opacity: 1; }
-    50% { transform: translateY(-20px) scale(1.1); }
+    50% { transform: translateY(-25px) scale(1.1); }
     100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-/* 音量控制圖標 */
 #volume-control {
     position: fixed;
     top: 15px;
     right: 15px;
     font-size: 2em;
     cursor: pointer;
-    z-index: 100; /* 確保在最上層 */
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    z-index: 100;
 }
 
-/* 響應式設計調整 */
 @media (min-width: 768px) {
-    /* 桌機或平板螢幕尺寸調整 */
-    #heart {
-        font-size: 200px;
-    }
-
-    #click-prompt {
-        font-size: 2em;
-    }
-
-    .card {
-        width: var(--card-max-width-desktop);
-        height: var(--card-max-height-desktop);
-    }
-
-    .card-front h1 {
-        font-size: 3em;
-    }
-    .card-front p {
-        font-size: 1.5em;
-    }
-    .card-back h2 {
-        font-size: 2.5em;
-    }
-    .card-back p {
-        font-size: 1.2em;
-    }
-    .balloons span {
-        font-size: 2.5em;
-    }
-    #volume-control {
-        font-size: 2.5em;
-    }
+    #heart { font-size: 200px; }
+    .card { width: var(--card-max-width-desktop); height: var(--card-max-height-desktop); }
+    .card-front h1 { font-size: 2em; }
+    .card-back h2 { font-size: 2.2em; }
+    .card-back p { font-size: 1.2em; }
 }
