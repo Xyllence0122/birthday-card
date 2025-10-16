@@ -1,3 +1,10 @@
+:root {
+    --card-width-mobile: 90vw; /* 手機上卡片寬度 */
+    --card-height-mobile: calc(var(--card-width-mobile) / 1.618); /* 黃金比例高度 */
+    --card-max-width-desktop: 800px; /* 桌機上卡片最大寬度 */
+    --card-max-height-desktop: 500px; /* 桌機上卡片最大高度 */
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -7,9 +14,39 @@ body {
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(to right top, #ffecd2, #fcb69f);
-    overflow: hidden;
+    overflow: hidden; /* 防止背景圖片溢出導致滾動條 */
     color: #333;
+    position: relative; /* 用於定位音量控制 */
 }
+
+/* 背景圖片飄落容器 */
+#image-background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* 確保不阻擋其他元素的點擊事件 */
+    z-index: 0; /* 讓背景圖片在最底層 */
+}
+
+.falling-image {
+    position: absolute;
+    width: 50px; /* 圖片大小 */
+    height: auto;
+    opacity: 0;
+    animation: fallAndFade 15s linear forwards; /* 調整動畫時間 */
+    pointer-events: none;
+}
+
+@keyframes fallAndFade {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
 
 .container {
     display: flex;
@@ -18,13 +55,22 @@ body {
     width: 100%;
     height: 100vh;
     position: relative;
+    z-index: 1; /* 確保內容在背景圖片之上 */
+}
+
+#initial-interaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 #heart {
-    font-size: 100px;
+    font-size: 150px; /* 放大愛心 */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
-    position: absolute;
+    position: relative;
     z-index: 10;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
@@ -35,33 +81,51 @@ body {
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.15); } /* 稍微放大跳動幅度 */
     100% { transform: scale(1); }
 }
 
-#heart.fade-out {
-    animation: fadeOut 1s forwards;
+#click-prompt {
+    font-size: 1.5em;
+    color: #e94e77;
+    margin-top: 15px;
+    font-weight: bold;
+    animation: fadeInOut 2s infinite; /* 提示文字閃爍 */
 }
 
-@keyframes fadeOut {
-    0% { opacity: 1; transform: scale(1.1); }
-    100% { opacity: 0; transform: scale(0.5); visibility: hidden; }
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+
+#initial-interaction.fade-out-interaction {
+    animation: fadeOutInteraction 1s forwards;
+}
+
+@keyframes fadeOutInteraction {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
 }
 
 .card {
-    width: 350px;
-    height: 500px;
+    width: var(--card-width-mobile); /* 手機端寬度 */
+    height: var(--card-height-mobile); /* 手機端高度 */
     perspective: 1000px;
     opacity: 0;
     transform: scale(0.8);
     transition: all 1s ease-out;
     position: relative;
     z-index: 5;
+    max-width: var(--card-max-width-desktop); /* 桌機最大寬度 */
+    max-height: var(--card-max-height-desktop); /* 桌機最大高度 */
+    display: none; /* 初始隱藏 */
 }
 
 .card.visible {
     opacity: 1;
     transform: scale(1);
+    display: block; /* 顯示卡片 */
 }
 
 .card-inner {
@@ -91,25 +155,26 @@ body {
     padding: 20px;
     box-sizing: border-box;
     text-align: center;
+    overflow-y: auto; /* 確保內容超出時可以滾動 */
 }
 
 .card-front {
     background-color: #f7e7d2;
-    background-image: url('https://via.placeholder.com/350x500/f7e7d2/333?text=生日快樂'); /* 替換成您的封面圖片 */
+    background-image: url('https://via.placeholder.com/600x370/f7e7d2/333?text=生日快樂封面'); /* 替換成您的封面圖片 */
     background-size: cover;
     background-position: center;
     color: #333;
 }
 
 .card-front h1 {
-    font-size: 2.5em;
+    font-size: 1.8em; /* 手機上調整字體大小 */
     color: #e94e77;
     margin-bottom: 15px;
     text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
 }
 
 .card-front p {
-    font-size: 1.2em;
+    font-size: 1em; /* 手機上調整字體大小 */
     color: #555;
 }
 
@@ -117,23 +182,27 @@ body {
     background-color: #fff;
     transform: rotateY(180deg);
     color: #333;
-    display: block; /* 讓內容可以自然換行 */
-    overflow-y: auto; /* 如果內容太多可以滾動 */
+    display: block;
 }
 
 .card-back h2 {
-    font-size: 2em;
+    font-size: 1.6em; /* 手機上調整字體大小 */
     color: #e94e77;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .card-back p {
-    font-size: 1.1em;
+    font-size: 0.9em; /* 手機上調整字體大小 */
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: #555;
+    text-align: left; /* 讓邀請函內容靠左對齊 */
+    max-width: 90%; /* 限制文字寬度 */
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 .balloons {
     position: absolute;
@@ -146,7 +215,7 @@ body {
 }
 
 .balloons span {
-    font-size: 2em;
+    font-size: 1.8em; /* 手機上調整大小 */
     animation: floatUp 5s infinite ease-in-out;
 }
 
@@ -160,26 +229,49 @@ body {
     100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
-.hidden {
-    display: none;
+/* 音量控制圖標 */
+#volume-control {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 100; /* 確保在最上層 */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
-/* 可以加入更多的動畫效果，例如雪花飄落等 */
-/* 例如: */
-/*
-.snowflake {
-    position: absolute;
-    background-color: #fff;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall 10s linear infinite;
-    pointer-events: none;
-    z-index: 99;
-}
+/* 響應式設計調整 */
+@media (min-width: 768px) {
+    /* 桌機或平板螢幕尺寸調整 */
+    #heart {
+        font-size: 200px;
+    }
 
-@keyframes fall {
-    0% { transform: translateY(-100px) translateX(0px); opacity: 0; }
-    10% { opacity: 0.8; }
-    100% { transform: translateY(100vh) translateX(50px); opacity: 0.2; }
+    #click-prompt {
+        font-size: 2em;
+    }
+
+    .card {
+        width: var(--card-max-width-desktop);
+        height: var(--card-max-height-desktop);
+    }
+
+    .card-front h1 {
+        font-size: 3em;
+    }
+    .card-front p {
+        font-size: 1.5em;
+    }
+    .card-back h2 {
+        font-size: 2.5em;
+    }
+    .card-back p {
+        font-size: 1.2em;
+    }
+    .balloons span {
+        font-size: 2.5em;
+    }
+    #volume-control {
+        font-size: 2.5em;
+    }
 }
-*/
