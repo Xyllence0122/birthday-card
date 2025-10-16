@@ -4,42 +4,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const card = document.getElementById('card');
     const backgroundMusic = document.getElementById('backgroundMusic');
     const volumeControl = document.getElementById('volume-control');
-    const backgroundDecorations = document.querySelector('.background-decorations'); // 修改為新的背景裝飾容器
+    const bgImageContainer = document.getElementById('image-background-container');
 
     let isMusicPlaying = false;
     let isMuted = false;
 
-    // --- 背景飄動的氣球和愛心設定 ---
-    const floatingItems = ['🎈', '❤️', '💖', '💛', '🎉']; // 氣球、愛心和彩帶表情符號
+    // --- 背景圖片飄落設定 ---
+    // 請將您的背景圖片 (例如: 氣球, 花朵, 壽桃, 生日蛋糕等) 放在這裡。
+    // 圖片檔案建議放在一個資料夾，例如 "images/"，然後像這樣設定路徑:
+    const bgImageUrls = [
+        'images/balloon1.png',
+        'images/flower1.png',
+        'images/cake_slice.png',
+        'images/balloon2.png',
+        'images/gift_box.png'
+        // 您可以添加更多圖片路徑
+    ];
 
-    function createFloatingItem() {
-        const item = document.createElement('span');
-        item.classList.add('floating-item');
-        item.textContent = floatingItems[Math.floor(Math.random() * floatingItems.length)];
-        
-        // 隨機初始位置 (從底部開始)
-        item.style.left = Math.random() * 100 + 'vw';
-        item.style.bottom = -10 + 'vh'; // 從螢幕下方開始
+    function createFallingImage() {
+        if (bgImageUrls.length === 0) return; // 如果沒有設定圖片，則不執行
 
-        // 設定 CSS 變量給動畫使用，增加隨風飄的感覺
-        item.style.setProperty('--drift-amount', (Math.random() * 80 - 40) + 'vw'); // -40vw 到 40vw 的橫向飄移
-        item.style.setProperty('--rotation-amount', (Math.random() * 720 - 360) + 'deg'); // -360度到360度的旋轉
-        item.style.fontSize = (Math.random() * 1.5 + 1) + 'em'; // 隨機大小 1em-2.5em
+        const img = document.createElement('img');
+        img.classList.add('falling-image');
+        img.src = bgImageUrls[Math.floor(Math.random() * bgImageUrls.length)];
+        img.style.left = Math.random() * 100 + 'vw'; // 隨機位置
+        img.style.animationDuration = Math.random() * 10 + 10 + 's'; // 隨機動畫時間 10-20秒
+        img.style.animationDelay = Math.random() * 5 + 's'; // 隨機延遲
+        img.style.width = Math.random() * 40 + 30 + 'px'; // 圖片大小 30-70px
+        bgImageContainer.appendChild(img);
 
-        backgroundDecorations.appendChild(item);
-
-        item.addEventListener('animationend', () => {
-            item.remove();
-            createFloatingItem(); // 持續生成新的飄動項目
+        img.addEventListener('animationend', () => {
+            img.remove(); // 動畫結束後移除元素
+            createFallingImage(); // 創建新的圖片以持續效果
         });
     }
 
-    // 初始生成一些飄動項目
-    for (let i = 0; i < 15; i++) { // 可以調整初始飄動項目數量
-        createFloatingItem();
+    // 初始生成一些背景圖片
+    for (let i = 0; i < 10; i++) { // 可以調整初始圖片數量
+        createFallingImage();
     }
-    // 每隔一段時間生成新的項目，保持背景流動
-    setInterval(createFloatingItem, 1500); // 每1.5秒生成一個新項目
+    // 每隔一段時間生成新的圖片，保持背景流動
+    setInterval(createFallingImage, 2000); // 每2秒生成一張新圖片
 
 
     // --- 音樂播放控制 ---
