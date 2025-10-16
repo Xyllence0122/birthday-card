@@ -1,0 +1,185 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: '微軟正黑體', 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to right top, #ffecd2, #fcb69f);
+    overflow: hidden;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+#heart {
+    font-size: 100px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    position: absolute;
+    z-index: 10;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.heart-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#heart.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(0.5); visibility: hidden; }
+}
+
+.card {
+    width: 350px;
+    height: 500px;
+    perspective: 1000px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 1s ease-out;
+    position: relative;
+    z-index: 5;
+}
+
+.card.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.card-front {
+    background-color: #f7e7d2;
+    background-image: url('https://via.placeholder.com/350x500/f7e7d2/333?text=生日快樂'); /* 替換成您的封面圖片 */
+    background-size: cover;
+    background-position: center;
+    color: #333;
+}
+
+.card-front h1 {
+    font-size: 2.5em;
+    color: #e94e77;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+}
+
+.card-front p {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.card-back {
+    background-color: #fff;
+    transform: rotateY(180deg);
+    color: #333;
+    display: block; /* 讓內容可以自然換行 */
+    overflow-y: auto; /* 如果內容太多可以滾動 */
+}
+
+.card-back h2 {
+    font-size: 2em;
+    color: #e94e77;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.card-back p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.balloons {
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.balloons span {
+    font-size: 2em;
+    animation: floatUp 5s infinite ease-in-out;
+}
+
+.balloons span:nth-child(1) { animation-delay: 0s; }
+.balloons span:nth-child(2) { animation-delay: 1.5s; }
+.balloons span:nth-child(3) { animation-delay: 3s; }
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    50% { transform: translateY(-20px) scale(1.1); }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.hidden {
+    display: none;
+}
+
+/* 可以加入更多的動畫效果，例如雪花飄落等 */
+/* 例如: */
+/*
+.snowflake {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fall 10s linear infinite;
+    pointer-events: none;
+    z-index: 99;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px) translateX(0px); opacity: 0; }
+    10% { opacity: 0.8; }
+    100% { transform: translateY(100vh) translateX(50px); opacity: 0.2; }
+}
+*/
