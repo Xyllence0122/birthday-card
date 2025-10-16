@@ -1,8 +1,8 @@
 :root {
-    --card-width-mobile: 95vw;
-    --card-height-mobile: calc(var(--card-width-mobile) / 1.4);
-    --card-max-width-desktop: 850px;
-    --card-max-height-desktop: 600px;
+    --card-width-mobile: 90vw; /* 手機上卡片寬度 */
+    --card-height-mobile: calc(var(--card-width-mobile) / 1.618); /* 黃金比例高度 */
+    --card-max-width-desktop: 800px; /* 桌機上卡片最大寬度 */
+    --card-max-height-desktop: 500px; /* 桌機上卡片最大高度 */
 }
 
 body {
@@ -14,12 +14,15 @@ body {
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(to right top, #ffecd2, #fcb69f);
-    overflow: hidden;
+    overflow: hidden; /* 防止溢出導致滾動條 */
     color: #333;
-    position: relative;
+    position: relative; /* 用於定位音量控制和背景裝飾 */
 }
 
-#image-background-container {
+/* 刪除 #image-background-container 和 .falling-image 相關樣式 */
+
+/* 新增背景飄動的氣球和愛心容器 */
+.background-decorations {
     position: absolute;
     top: 0;
     left: 0;
@@ -27,24 +30,26 @@ body {
     height: 100%;
     overflow: hidden;
     pointer-events: none;
-    z-index: 0;
+    z-index: 0; /* 確保在最底層 */
 }
 
-.falling-image {
+.floating-item {
     position: absolute;
-    width: 50px;
-    height: auto;
+    font-size: 2em; /* 預設大小 */
     opacity: 0;
-    animation: fallAndFade 15s linear forwards;
+    animation: floatAndDrift 15s linear infinite; /* 調整動畫時間，加入飄動感 */
     pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-@keyframes fallAndFade {
-    0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+@keyframes floatAndDrift {
+    0% { transform: translateY(100vh) translateX(0vw) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.8; }
+    50% { transform: translateY(50vh) translateX(calc(var(--drift-amount) * 0.5)) rotate(calc(var(--rotation-amount) * 0.5)); }
+    80% { opacity: 0.8; }
+    100% { transform: translateY(-10vh) translateX(var(--drift-amount)) rotate(var(--rotation-amount)); opacity: 0; }
 }
+
 
 .container {
     display: flex;
@@ -53,11 +58,19 @@ body {
     width: 100%;
     height: 100vh;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* 確保內容在背景裝飾之上 */
+}
+
+#initial-interaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 #heart {
-    font-size: 150px;
+    font-size: 150px; /* 放大愛心 */
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
     position: relative;
@@ -65,32 +78,57 @@ body {
     text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
 
-.heart-pulse { animation: pulse 1.5s infinite; }
+.heart-pulse {
+    animation: pulse 1.5s infinite;
+}
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.15); } /* 稍微放大跳動幅度 */
     100% { transform: scale(1); }
 }
 
+#click-prompt {
+    font-size: 1.5em;
+    color: #e94e77;
+    margin-top: 15px;
+    font-weight: bold;
+    animation: fadeInOut 2s infinite; /* 提示文字閃爍 */
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+
+#initial-interaction.fade-out-interaction {
+    animation: fadeOutInteraction 1s forwards;
+}
+
+@keyframes fadeOutInteraction {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.8); visibility: hidden; }
+}
+
 .card {
-    width: var(--card-width-mobile);
-    height: var(--card-height-mobile);
+    width: var(--card-width-mobile); /* 手機端寬度 */
+    height: var(--card-height-mobile); /* 手機端高度 */
     perspective: 1000px;
     opacity: 0;
     transform: scale(0.8);
     transition: all 1s ease-out;
     position: relative;
     z-index: 5;
-    max-width: var(--card-max-width-desktop);
-    max-height: var(--card-max-height-desktop);
-    display: none;
+    max-width: var(--card-max-width-desktop); /* 桌機最大寬度 */
+    max-height: var(--card-max-height-desktop); /* 桌機最大高度 */
+    display: none; /* 初始隱藏 */
 }
 
 .card.visible {
     opacity: 1;
     transform: scale(1);
-    display: block;
+    display: block; /* 顯示卡片 */
 }
 
 .card-inner {
@@ -99,11 +137,13 @@ body {
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.8s;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-.card.flipped .card-inner { transform: rotateY(180deg); }
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
 
 .card-front, .card-back {
     position: absolute;
@@ -114,87 +154,113 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
-    padding: 30px;
+    border-radius: 15px;
+    padding: 20px;
     box-sizing: border-box;
     text-align: center;
-    overflow: hidden; /* 文字完全顯示，不可滾動 */
+    /* 移除 overflow-y: auto; 讓文字方塊自動撐開，不需滾動 */
+    overflow-y: hidden; /* 防止卡片本身滾動條，讓內容適應 */
 }
 
 .card-front {
     background-color: #f7e7d2;
+    background-image: url('https://via.placeholder.com/600x370/f7e7d2/333?text=生日快樂封面'); /* 替換成您的封面圖片 */
     background-size: cover;
     background-position: center;
     color: #333;
+    /* 確保內容可以完整顯示 */
+    justify-content: space-around; /* 讓內容在垂直方向上分佈 */
+    padding: 5% 3%; /* 調整內邊距 */
 }
 
 .card-front h1 {
-    font-size: 1.4em;
+    font-size: 1.5em; /* 手機上調整字體大小 */
     color: #e94e77;
-    line-height: 1.6;
+    margin-bottom: 0.5em; /* 調整間距 */
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+    line-height: 1.4; /* 調整行高 */
+    max-width: 90%; /* 限制文字寬度 */
+}
+
+.card-front p {
+    font-size: 1em; /* 手機上調整字體大小 */
+    color: #555;
+    margin-top: 0.5em;
 }
 
 .card-back {
     background-color: #fff;
     transform: rotateY(180deg);
     color: #333;
+    display: block;
+    /* 確保內容可以完整顯示 */
+    justify-content: space-around; /* 讓內容在垂直方向上分佈 */
+    padding: 5% 3%; /* 調整內邊距 */
 }
 
 .card-back h2 {
-    font-size: 1.6em;
+    font-size: 1.6em; /* 手機上調整字體大小 */
     color: #e94e77;
-    margin-bottom: 15px;
+    margin-bottom: 0.5em; /* 調整間距 */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .card-back p {
-    font-size: 1em;
+    font-size: 0.9em; /* 手機上調整字體大小 */
     line-height: 1.6;
+    margin-bottom: 0.5em; /* 調整間距 */
     color: #555;
-    text-align: left;
-    max-width: 90%;
-    margin: 0 auto;
+    text-align: left; /* 讓邀請函內容靠左對齊 */
+    max-width: 90%; /* 限制文字寬度 */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.balloons {
-    position: absolute;
-    bottom: 10px;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
+/* 刪除 .balloons 相關樣式，因為已移至背景飄動 */
 
-.balloons span {
-    font-size: 2em;
-    animation: floatUp 6s infinite ease-in-out;
-}
-
-.balloons span:nth-child(1) { animation-delay: 0s; }
-.balloons span:nth-child(2) { animation-delay: 1.2s; }
-.balloons span:nth-child(3) { animation-delay: 2.4s; }
-.balloons span:nth-child(4) { animation-delay: 3.6s; }
-.balloons span:nth-child(5) { animation-delay: 4.8s; }
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    50% { transform: translateY(-25px) scale(1.1); }
-    100% { transform: translateY(0) scale(1); opacity: 1; }
-}
-
+/* 音量控制圖標 */
 #volume-control {
     position: fixed;
     top: 15px;
     right: 15px;
     font-size: 2em;
     cursor: pointer;
-    z-index: 100;
+    z-index: 100; /* 確保在最上層 */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
+/* 響應式設計調整 */
 @media (min-width: 768px) {
-    #heart { font-size: 200px; }
-    .card { width: var(--card-max-width-desktop); height: var(--card-max-height-desktop); }
-    .card-front h1 { font-size: 2em; }
-    .card-back h2 { font-size: 2.2em; }
-    .card-back p { font-size: 1.2em; }
+    /* 桌機或平板螢幕尺寸調整 */
+    #heart {
+        font-size: 200px;
+    }
+
+    #click-prompt {
+        font-size: 2em;
+    }
+
+    .card {
+        width: var(--card-max-width-desktop);
+        height: var(--card-max-height-desktop);
+    }
+
+    .card-front h1 {
+        font-size: 2.5em; /* 調整桌機字體大小 */
+    }
+    .card-front p {
+        font-size: 1.3em; /* 調整桌機字體大小 */
+    }
+    .card-back h2 {
+        font-size: 2em; /* 調整桌機字體大小 */
+    }
+    .card-back p {
+        font-size: 1.1em; /* 調整桌機字體大小 */
+    }
+    .floating-item {
+        font-size: 3em; /* 桌機上氣球愛心大小 */
+    }
+    #volume-control {
+        font-size: 2.5em;
+    }
 }
